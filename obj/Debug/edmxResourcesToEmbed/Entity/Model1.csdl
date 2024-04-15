@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Studiya_zvukozapisiModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Album">
+    <Key>
+      <PropertyRef Name="AlbumID" />
+    </Key>
+    <Property Name="AlbumID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Releasedate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="ExecutorID" Type="Int32" Nullable="false" />
+    <Property Name="AlbumTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Price" Type="Int32" Nullable="false" />
+    <Property Name="Tirage" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Execuor" Relationship="Self.FK_Album_Execuor" FromRole="Album" ToRole="Execuor" />
+    <NavigationProperty Name="Music" Relationship="Self.FK_Music_Album" FromRole="Album" ToRole="Music" />
+    <NavigationProperty Name="Order" Relationship="Self.FK_Order_Album" FromRole="Album" ToRole="Order" />
+  </EntityType>
+  <EntityType Name="Execuor">
+    <Key>
+      <PropertyRef Name="ExecutorID" />
+    </Key>
+    <Property Name="ExecutorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FIO" Type="String" MaxLength="67" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Birthday" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Dateofdeath" Type="DateTime" Precision="0" />
+    <Property Name="Adress" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Album" Relationship="Self.FK_Album_Execuor" FromRole="Execuor" ToRole="Album" />
+    <NavigationProperty Name="Music" Relationship="Self.FK_Music_Execuor" FromRole="Execuor" ToRole="Music" />
+  </EntityType>
+  <EntityType Name="Music">
+    <Key>
+      <PropertyRef Name="MusicID" />
+    </Key>
+    <Property Name="MusicID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ExecuorID" Type="Int32" Nullable="false" />
+    <Property Name="AlbumID" Type="Int32" Nullable="false" />
+    <Property Name="Author" Type="String" MaxLength="67" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Genre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Album" Relationship="Self.FK_Music_Album" FromRole="Music" ToRole="Album" />
+    <NavigationProperty Name="Execuor" Relationship="Self.FK_Music_Execuor" FromRole="Music" ToRole="Execuor" />
+  </EntityType>
+  <EntityType Name="Order">
+    <Key>
+      <PropertyRef Name="OrderID" />
+    </Key>
+    <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AlbumID" Type="Int32" Nullable="false" />
+    <Property Name="StatusID" Type="Int32" Nullable="false" />
+    <Property Name="Dateoffeeding" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="Album" Relationship="Self.FK_Order_Album" FromRole="Order" ToRole="Album" />
+    <NavigationProperty Name="Status" Relationship="Self.FK_Order_Status" FromRole="Order" ToRole="Status" />
+  </EntityType>
+  <EntityType Name="Status">
+    <Key>
+      <PropertyRef Name="StatusID" />
+    </Key>
+    <Property Name="StatusID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="11" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Order" Relationship="Self.FK_Order_Status" FromRole="Status" ToRole="Order" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="Name" />
+      <PropertyRef Name="Email" />
+      <PropertyRef Name="Password" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Album_Execuor">
+    <End Role="Execuor" Type="Self.Execuor" Multiplicity="1" />
+    <End Role="Album" Type="Self.Album" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Execuor">
+        <PropertyRef Name="ExecutorID" />
+      </Principal>
+      <Dependent Role="Album">
+        <PropertyRef Name="ExecutorID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Music_Album">
+    <End Role="Album" Type="Self.Album" Multiplicity="1" />
+    <End Role="Music" Type="Self.Music" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Album">
+        <PropertyRef Name="AlbumID" />
+      </Principal>
+      <Dependent Role="Music">
+        <PropertyRef Name="AlbumID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Order_Album">
+    <End Role="Album" Type="Self.Album" Multiplicity="1" />
+    <End Role="Order" Type="Self.Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Album">
+        <PropertyRef Name="AlbumID" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="AlbumID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Music_Execuor">
+    <End Role="Execuor" Type="Self.Execuor" Multiplicity="1" />
+    <End Role="Music" Type="Self.Music" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Execuor">
+        <PropertyRef Name="ExecutorID" />
+      </Principal>
+      <Dependent Role="Music">
+        <PropertyRef Name="ExecuorID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Order_Status">
+    <End Role="Status" Type="Self.Status" Multiplicity="1" />
+    <End Role="Order" Type="Self.Order" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Status">
+        <PropertyRef Name="StatusID" />
+      </Principal>
+      <Dependent Role="Order">
+        <PropertyRef Name="StatusID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Studiya_zvukozapisiEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Album" EntityType="Self.Album" />
+    <EntitySet Name="Execuor" EntityType="Self.Execuor" />
+    <EntitySet Name="Music" EntityType="Self.Music" />
+    <EntitySet Name="Order" EntityType="Self.Order" />
+    <EntitySet Name="Status" EntityType="Self.Status" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="Users" EntityType="Self.Users" />
+    <AssociationSet Name="FK_Album_Execuor" Association="Self.FK_Album_Execuor">
+      <End Role="Execuor" EntitySet="Execuor" />
+      <End Role="Album" EntitySet="Album" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Music_Album" Association="Self.FK_Music_Album">
+      <End Role="Album" EntitySet="Album" />
+      <End Role="Music" EntitySet="Music" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Order_Album" Association="Self.FK_Order_Album">
+      <End Role="Album" EntitySet="Album" />
+      <End Role="Order" EntitySet="Order" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Music_Execuor" Association="Self.FK_Music_Execuor">
+      <End Role="Execuor" EntitySet="Execuor" />
+      <End Role="Music" EntitySet="Music" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Order_Status" Association="Self.FK_Order_Status">
+      <End Role="Status" EntitySet="Status" />
+      <End Role="Order" EntitySet="Order" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

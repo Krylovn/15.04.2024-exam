@@ -1,0 +1,33 @@
+﻿<Page x:Class="zvuk.page.albom"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:zvuk.page"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="albom" IsVisibleChanged="Page_IsVisibleChanged">
+
+    <Grid>
+        <DataGrid IsReadOnly="True" AutoGenerateColumns="False" x:Name="DGridgorod" Margin="0,35,10,1" Grid.ColumnSpan="3"  >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Дата релиза" Binding="{Binding Releasedate}"/>
+                <DataGridTextColumn Header="ФИО" Binding="{Binding Execuor.FIO}"/>
+                <DataGridTextColumn Header="Название альбома" Binding="{Binding AlbumTitle}"/>
+                <DataGridTextColumn Header="Цена" Binding="{Binding Price}"/>
+                <DataGridTextColumn Header="Тираж" Binding="{Binding Tirage}"/>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Редактировать" Background="Red" x:Name="BtnEdit" Click="BtnEdit_Click"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Content="Назад" HorizontalAlignment="Left" Margin="125,10,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <Button Content="Добавить" Name="dob" HorizontalAlignment="Left" Margin="63,10,0,0" VerticalAlignment="Top" Click="dob_Click"/>
+        <Button Content="Удалить" Name="del" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Click="del_Click"/>
+
+    </Grid>
+</Page>
